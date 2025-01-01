@@ -1,16 +1,11 @@
-FROM mysql:latest
+# Use an Ubuntu base image
+FROM ubuntu:20.04
 
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=test
-ENV MYSQL_USER=test
-ENV MYSQL_PASSWORD=test
+# Install MySQL and NGINX
+RUN apt-get update && apt-get install -y mysql-server nginx
 
-# Install NGINX
-RUN apt-get update && apt-get install -y nginx
+# Expose necessary ports
+EXPOSE 3306 80
 
-# Start NGINX and MySQL
-CMD service nginx start && docker-entrypoint.sh mysqld
-
-
-EXPOSE 3306
-
+# Start both MySQL and NGINX
+CMD service mysql start && service nginx start && tail -f /dev/null
